@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Caja de Ahorro Alda</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Alda">
+        <meta name="date" content="27/04/2023">
+        <link rel="stylesheet" type="text/css" href="style/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="style/js/gft/gft.css"/>
+        <link rel="stylesheet" type="text/css" href="style/css/estilos.css"/>
+        <link rel="icon" type="image/x-icon" href="resources/logoUTLicono.png"/>
+    </head>
+    <body onload="inicializar();">
+        <div class="principal" id="formulario" style="margin-top: 110px;">
+            <div class="row">
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" disabled>
+                        Llenar Solicitud
+                    </button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="verConsultas();">
+                        Solicitudes
+                    </button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="creditosOtorgados();">
+                        Creditos Otorgados
+                    </button>
+                </div>
+            </div>
+            <h1 class="text-center">Solicitar Credito</h1>
+            <form class="needs-validation row">
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="txtNombre">Nombre</label>
+                    <input class="form-control" type="text" id="txtNombre" required oninput="habilitarBotones();">
+                    <div class="invalid-feedback">
+                        Ingresa el nombre del cliente
+                    </div>
+                </div>
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="txtFechaNacimiento">Fecha de Nacimiento</label>
+                    <input class="form-control" type="date" id="txtFechaNacimiento" required oninput="habilitarBotones();">
+                    <div class="invalid-feedback">
+                        Ingresa la fecha de nacimiento del cliente
+                    </div>
+                </div>
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="cmbGenero">Genero</label>
+                    <select id="cmbGenero" name="cmbGenero" required class="form-control form-select form-select-sm" oninput="habilitarBotones();">
+                        <option selected>
+                            Seleccione el Genero:
+                        </option>
+                        <option value="M">
+                            Masculino
+                        </option>
+                        <option value="F">
+                            Femenino
+                        </option>
+                        <option value="O">
+                            Otro
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Ingresa el genero del cliente
+                    </div>
+                </div>
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="txtNumeroHijos">Numero de Hijos</label>
+                    <input class="form-control" type="number" id="txtNumeroHijos" required oninput="habilitarBotones();">
+                    <div class="invalid-feedback">
+                        Ingresa la cantidad de hijos que tiene el cliente
+                    </div>
+                </div>
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="txtIngresoMensual">Ingreso Mensual</label>
+                    <input class="form-control" type="number" id="txtIngresoMensual" required oninput="habilitarBotones();">
+                    <div class="invalid-feedback">
+                        Ingresa el total de sus ingresos mensuales
+                    </div>
+                </div>
+                <div class="form-group was-validated col-lg-4">
+                    <label class="form-label" for="txtMontoCredito">Monto a Solicitar</label>
+                    <input class="form-control" type="number" id="txtMontoCredito" required oninput="habilitarBotones();">
+                    <div class="invalid-feedback">
+                        Ingresa la cantidad solicitada
+                    </div>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-primary" onclick="evaluarSolicitud();">Evaluar Solicitud</button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button id="btnLimpiar" class="btn btn-secondary" onclick="limpiar();" disabled>Limpiar</button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button id="btnAceptar" class="btn btn-success" onclick="aceptarCredito();">Aceptar Credito</button>
+                </div>
+                <div class="d-flex justify-content-center spinner-container d-none">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">
+                        Loading...
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-12 justify-content-center align-content-center d-flex respuesta d-none">
+                    <h1 class="text-center">Respuesta del credito:</h1>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Nombre del cliente:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Fecha de nacimiento del cliente:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Genero del cliente:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnNombre"></span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnFechaNacimiento"></span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnGenero"></span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Numero de Hijos:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Ingreso mensual del cliente:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Monto solicitado:</span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnNumeroHijos"></span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnIngresoMensual"></span>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center" id="spnMontoCredito"></span>
+                </div>
+                <div class="col-lg-12 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center">Resultado del Analisis:</span>
+                </div>
+                <div class="col-lg-12 justify-content-center align-content-center d-flex respuesta d-none">
+                    <span class="text-center colorletra" style="font-size: 50px;" id="spnResultado"></span>
+                </div>
+            </form>
+        </div>
+        
+        <div class="principal d-none" id="consultas">
+            <div class="row">
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="llenarFormulario();">
+                        Llenar Solicitud
+                    </button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" disabled>
+                        Solicitudes
+                    </button>
+                </div>  
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="creditosOtorgados();">
+                        Creditos Otorgados
+                    </button>
+                </div>
+            </div>
+            <h1 class="text-center">Consultar Solicitudes</h1>
+            <div class="col-lg-12 justify-content-center align-content-center d-flex form-group">
+                <label class="form-label" for="txtBuscarPresupuesto">Buscar Presupuesto:</label>
+                <input class="form-control" type="text" id="txtBuscarPresupuesto">
+            </div>
+            <table class="table table-hover" id="tablaCreditos">
+                <thead>
+                    <tr>
+                        <th>Solicitud</th>
+                        <th>Nombre</th>
+                        <th>Ingreso mensual</th>
+                        <th>Monto solicitado</th>
+                        <th>Respuesta</th>
+                    </tr>
+                </thead>
+                <tbody id="datosSolicitudes">
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="principal d-none" id="creditosOtorgados">
+            <div class="row">
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="llenarFormulario();">
+                        Llenar Solicitud
+                    </button>
+                </div>
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" onclick="verConsultas();">
+                        Solicitudes
+                    </button>
+                </div>  
+                <div class="col-lg-4 justify-content-center align-content-center d-flex">
+                    <button class="btn btn-info" disabled>
+                        Creditos Otorgados
+                    </button>
+                </div>
+            </div>
+            <h1 class="text-center">Creditos Otorgados</h1>
+            <div class="col-lg-12 justify-content-center align-content-center d-flex form-group">
+                <label class="form-label" for="txtBuscarOtorgados">Buscar Credito:</label>
+                <input class="form-control" type="text" id="txtBuscarOtorgados">
+            </div>
+            <table class="table table-hover" id="tablaCreditosOtorgados">
+                <thead>
+                    <tr>
+                        <th>Credito</th>
+                        <th>Nombre</th>
+                        <th>Monto otorgado</th>
+                    </tr>
+                </thead>
+                <tbody id="datosCreditosOtorgados">
+                    
+                </tbody>
+            </table>
+        </div>
+        <script src="style/js/bootstrap.bundle.js"></script>
+        <script src="js/ControllerCreditos.js"></script>
+        <script src="style/js/gft/gft.js"></script>        
+    </body>
+</html>
